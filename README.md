@@ -52,3 +52,54 @@ Releasing Resources:
 - Closes all OpenCV windows.
 
 This code essentially performs real-time monitoring of parking spaces in a video feed, providing visual feedback on the occupancy status of each parking spot. It uses YOLO for object detection and OpenCV for video processing and visualization.
+## get_spot
+Imports:
+
+- `cv2`: OpenCV library for computer vision tasks.
+- `numpy`: Library for numerical computing.
+- `pickle`: Library for serializing and deserializing Python objects.
+- `cvzone`: A computer vision library built on top of OpenCV.
+
+Variable Initialization:
+
+- `drawing`: A boolean flag to track if the user is currently drawing an area.
+- `areaName`: A list to store names of defined areas.
+- `points`: A list to store the points defining the area being drawn.
+- `current_name`: A variable to temporarily store the name of the current area being drawn.
+
+Video Capture:
+
+- Opens a video file named "ParkWatch.mp4" for processing using `cv2.VideoCapture`.
+
+Loading Saved Area Information:
+
+- Tries to load previously saved area information (polylines and area names) from a file named "points_and_names_of_area" using `pickle`.
+- If the file is not found, initializes `polylines` as an empty list.
+
+Function to Draw Area by Mouse:
+
+- Defines a callback function `draw` to handle mouse events for drawing areas.
+- On left button down event (`cv2.EVENT_LBUTTONDOWN`), starts recording points.
+- On mouse move event (`cv2.EVENT_MOUSEMOVE`), records points while the left button is pressed.
+- On left button up event (`cv2.EVENT_LBUTTONUP`), stops recording points, prompts the user for the name of the area, and appends the area name and its defining points to `areaName` and `polylines`, respectively.
+
+Video Frame Processing Loop:
+
+- Enters a loop to process each frame of the video.
+- Resizes each frame to a fixed size.
+- Draws previously defined areas (polylines) on the frame.
+- Sets a mouse callback function (`draw`) to handle mouse events for defining new areas.
+- Displays the frame with areas drawn (`cv2.imshow`).
+
+Key Press Handling:
+
+- Waits for a key press for a specified duration (60 milliseconds) using `cv2.waitKey`.
+- If the 's' key is pressed, saves the defined areas and their names to a file named "points_and_names_of_area" using `pickle.dump` and exits the loop.
+- If the 'q' key is pressed, exits the loop.
+
+Releasing Resources:
+
+- Releases the video capture object (`cap.release()`).
+- Closes all OpenCV windows (`cv2.destroyAllWindows()`).
+
+This code allows users to interactively define areas of interest within a video by drawing polygons using the mouse. It provides functionality to save the defined areas along with their names for future use.
